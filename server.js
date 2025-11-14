@@ -14,7 +14,7 @@ const corsOptions = {
     methods: "GET, POST, PUT, PATCH, DELETE" //ES UNA CADENA 
 }
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use( express.urlencoded({extended: true}) )
 app.use( express.json() )

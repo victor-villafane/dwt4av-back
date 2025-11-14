@@ -10,7 +10,7 @@ import cors from 'cors'
 const app = express();
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["*"],
     methods: "GET, POST, PUT, PATCH, DELETE" //ES UNA CADENA 
 }
 
@@ -25,4 +25,7 @@ app.use(ProductosRoute)
 app.use("/api/productos",ProductosApiRoute)
 app.use("/api/recomendacion", RecomendacionApiRoute)
 app.use( "/api/usuarios", UsuariosApiRoute )
-app.listen(2025, () => console.log("funcionando"));
+
+const port = process.env.PORT || 2025 
+
+app.listen(port, () => console.log("funcionando en " + port));

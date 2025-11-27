@@ -8,6 +8,8 @@ import swaggerJSON from './swagger.output.json' with { type: 'json' }
 import multer from "multer"
 import sharp from "sharp"
 import cors from 'cors'
+import http from 'http'
+import { Server } from "socket.io";
 
 const app = express();
 
@@ -58,4 +60,30 @@ app.post("/upload", [upload.single("file"), resizeImage], (req, res) => {
 
 const port = process.env.PORT || 2025
 
-app.listen(port, () => console.log("funcionando en " + port));
+// app.listen(port, () => console.log("funcionando en " + port));
+
+const server = http.createServer(app)
+
+const io = new Server(server, {
+    cors: {
+        origin: "*"
+    }
+})
+
+io.on("connection", (socket) => {
+    console.log("Conectado: " + socket.id)
+    socket.on("hola", (data) => {
+        console.log("Recibi el hola y la data:" ,data)
+        socket.emit("recibido", {
+            id: "1"
+        })
+    })
+    socket.on("todos", () => {
+        console.log("Tengo que notificar a todos")
+        io.emit("notificados")
+    })
+})
+
+
+
+server.listen( port, () => console.log("funcionando en " + port) )
